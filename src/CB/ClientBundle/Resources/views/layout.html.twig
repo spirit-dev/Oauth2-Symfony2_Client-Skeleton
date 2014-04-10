@@ -1,0 +1,60 @@
+{% extends "::base.html.twig" %}
+ 
+{% block title %}
+  {{ parent() }}
+{% endblock %}
+
+{% block meta %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+{% block stylesheets %}
+    <!-- BOOSTRAP -->
+    <link rel="stylesheet" href="{{ asset('js/bootstrap3/css/bootstrap.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('js/bootstrap3/css/bootstrap-theme.min.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+    <!-- BOOSTRAP -->
+    <script type="text/javascript" src="{{ asset('js/bootstrap3/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+{% block perso_javascripts %}
+    <!-- JQUERY -->
+    <script type="text/javascript" src="{{ asset('js/jquery/jquery-2.1.0.js') }}"></script>
+    
+    <script type="text/javascript" src="{{ asset('js/login.js') }}"></script>
+{% endblock %}
+
+{% block perso_css %}
+    <link rel="stylesheet" href="{{ asset('css/sign-in.css') }}" type="text/css" />
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}
+
+
+            
+
+
+{% block menu %}
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Spirit-Dev.net</a>
+            
+            {#{{ knp_menu_render('HomeMainBundle:MenuBuilder:mainMenu', {'currentClass': 'active', 'template': 'HomeMainBundle:Menu:knp_menu.html.twig'}) }}
+            
+            {% if is_granted("ROLE_SUPER_ADMIN") %}
+                {{ knp_menu_render('HomeMainBundle:MenuBuilder:adminMenu', {'currentClass': 'active', 'template': 'HomeMainBundle:Menu:knp_menu.html.twig'}) }}
+            {% endif %}
+            
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ knp_menu_render('HomeMainBundle:MenuBuilder:userMenu', {'currentClass': 'active', 'template': 'HomeMainBundle:Menu:knp_menu.html.twig'}) }}
+            {% endif %}#}
+            
+        </div>
+    </div>
+{% endblock %}

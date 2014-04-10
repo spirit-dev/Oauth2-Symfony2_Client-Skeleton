@@ -1,0 +1,3 @@
+cb_client:
+    resource: "@CBClientBundle/Resources/config/routing.yml"
+    prefix:   /

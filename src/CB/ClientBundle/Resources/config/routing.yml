@@ -1,0 +1,15 @@
+cb_client_homepage:
+    pattern:  /index
+    defaults: { _controller: CBClientBundle:Default:index }
+
+cb_client_login:
+    pattern:  /login
+    defaults: { _controller: CBClientBundle:Default:login }
+
+cb_client_auth_test: 
+    pattern:  /auth_test
+    defaults: { _controller: CBClientBundle:Default:passwordGrant }
+
+cb_api_auth:
+    resource: "@CBClientBundle/Controller/AuthController.php"
+    type: annotation
