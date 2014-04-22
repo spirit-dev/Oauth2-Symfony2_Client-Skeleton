@@ -1,4 +1,4 @@
-var access_token = null;
+var access_token;
 
 $(document).ready(function() {
 
@@ -32,13 +32,14 @@ $(document).ready(function() {
 
 	});
 
-	$('#enttest').click(function() {
+	$('#check_token_remote').click(function() {
 
 		$.ajax({
 			url: 'http://cubbyholeclient.com/enttest',
 		})
 		.done(function(data) {
-			console.log(data);
+			access_token = data.response_data.access_token;
+			console.log("Remote access token = "+access_token);
 		})
 		.fail(function() {
 			console.log("error");
@@ -46,8 +47,12 @@ $(document).ready(function() {
 		.always(function() {
 			console.log("complete");
 		});
-		
 
+	});
+
+	$('#check_token_local').click(function() {
+
+		console.log("Local access token = "+access_token);
 	});
 
 });
