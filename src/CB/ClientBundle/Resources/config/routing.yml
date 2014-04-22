@@ -13,3 +13,7 @@ cb_client_auth_test:
 cb_api_auth:
     resource: "@CBClientBundle/Controller/AuthController.php"
     type: annotation
+
+cb_client_enttest:
+    pattern: /enttest
+    defaults: { _controller: CBClientBundle:Default:enttest }

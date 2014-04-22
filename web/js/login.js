@@ -1,3 +1,5 @@
+var access_token = null;
+
 $(document).ready(function() {
 
 
@@ -12,13 +14,39 @@ $(document).ready(function() {
 				"password": $('#login_pw').val()
 			}
 		})
-		.done(function(data) {
-			console.log(data);
+		.done(function(data, textStatus, xhr) {
+
+			if (xhr.status == 200) {
+				access_token = data.response_data.access_token;
+
+				window.location.replace(data.response_data.redirect_value);
+			}
+			else if (xhr.status == 206) {
+				console.log(data);
+			}
 			
 		})
 		.fail(function(data) {
 			console.log(data);
 		});
+
+	});
+
+	$('#enttest').click(function() {
+
+		$.ajax({
+			url: 'http://cubbyholeclient.com/enttest',
+		})
+		.done(function(data) {
+			console.log(data);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
 
 	});
 

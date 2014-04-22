@@ -20,6 +20,10 @@ the example will be runnable.
 ### 1-1 Unzip file
 ### 1-2 Install vendors
 
+To install vendors, execute the following command
+
+	php composer.phar update
+
 2) First tests of your application
 ----------------------------------
 

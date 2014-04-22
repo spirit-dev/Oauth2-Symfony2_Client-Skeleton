@@ -4,6 +4,7 @@ namespace CB\ClientBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Buzz\Browser;
@@ -30,32 +31,36 @@ class DefaultController extends Controller
         $username = $request->get('username');
         $password = $request->get('password');
 
-        $browser = $this->container->get('buzz');
-        $serverResponse = $browser->get('http://cubbyholeapi.com/oauth/v2/token?grant_type=password&client_id=2_3nuzi79oo084g4ko44cs4s488sw4wsgggcow0gwk8swswwgcsg&client_secret=1q92cxj87ssgsc4ow4osgs804s8kcwwwss4gc4wkc40so00wsk&username='.$username.'&password='.$password.'&redirect_uri=http://cubbyholeclient.com/index');
+        $oar = $this->container->get('cb_client.oauthrequestor');
 
-        $response = json_decode($serverResponse->getContent(), true);
+        $req = $oar->getUserGrants($username, $password);
 
-        if ($response == null) {
-            return new Response("A server error occured.", 503);
+        if ($req == 200) {
+            // REDIRECT RESPONSE
+            return new JsonResponse(array(
+                "response_header" => "authentification",
+                "response_type" => "redirection",
+                "response_text" => "User authentification accorded. Need to redirect",
+                "response_data" => array(
+                        "redirect_value" => $oar->getRedirectUri(),
+                        "access_token" => $oar->getAccessToken()
+                    )
+            ), 200);   
         }
-        elseif(array_key_exists('error', $response)) {
-            return new Response("User authentification failed.");
-        }
-        elseif (array_key_exists('access_token', $response) && 
-                array_key_exists('refresh_token', $response) &&
-                array_key_exists('scope', $response) &&
-                array_key_exists('expires_in', $response) &&
-                array_key_exists('token_type', $response)) {
+        if ($req == 206)
+            return new JsonResponse(array(
+                "response_header" => "authentification nok",
+                "response_type" => "explanation",
+                "response_text" => "User authentification failed."
+            ), 206);
+    }
 
-            $access_token = $response['access_token'];
-            $refresh_token = $response['refresh_token'];
-            $scope = $response['scope'];
-            $expires_in = $response['expires_in'];
-            $token_type = $response['token_type']; 
+    public function enttestAction() {
 
-            return new Response("User authentification granted.");
-        }
-            
-        return new Response(500, "A server error occured.");
+        $oar = $this->container->get('cb_client.oauthrequestor');
+
+        $req = $oar->checkStatus();
+
+        return new JsonResponse($req, 200);  
     }
 }
