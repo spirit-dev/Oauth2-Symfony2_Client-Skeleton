@@ -3,6 +3,11 @@
 {% block title %}
   Dashboard - {{ parent() }}
 {% endblock %}
+
+
+{% block more_stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/sign-in.css') }}" type="text/css" />
+{% endblock %}
  
 {% block body %}
  

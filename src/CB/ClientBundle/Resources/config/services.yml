@@ -1,13 +1,17 @@
 parameters:
     cb_client.oauthrequestor.class: CB\ClientBundle\Security\OAuthRequestor
     cb_client_oauth_user_grants.class: CB\ClientBundle\Security\OAuthUserGrants
+    cb_client.auth_user_entity.class: CB\ClientBundle\Security\OAuthUserEntity
 
 services:
     cb_client.oauthrequestor:
         class: %cb_client.oauthrequestor.class%
         calls:
             - [setUserGrantsManager, ["@cb_client.oauth_user_grants"]]
+            - [setUserEntity, ["@cb_client.auth_user_entity"]]
             - [setBroswer, ["@buzz"]]
        # arguments: [@service_id, "plain_value", %parameter%]
     cb_client.oauth_user_grants:
         class: %cb_client_oauth_user_grants.class%
+    cb_client.auth_user_entity:
+        class: %cb_client.auth_user_entity.class%

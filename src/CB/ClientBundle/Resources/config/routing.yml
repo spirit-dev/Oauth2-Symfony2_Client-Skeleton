@@ -14,6 +14,14 @@ cb_api_auth:
     resource: "@CBClientBundle/Controller/AuthController.php"
     type: annotation
 
-cb_client_enttest:
-    pattern: /enttest
-    defaults: { _controller: CBClientBundle:Default:enttest }
+cb_client_check_remote_token:
+    pattern: /check_remote_token
+    defaults: { _controller: CBClientBundle:Default:checkToken }
+
+cb_client_check_remote_user:
+    pattern: /check_remote_user
+    defaults: { _controller: CBClientBundle:Default:checkUser }
+    
+cb_client_delete_remote_user:
+    pattern: /delete_remote_user
+    defaults: { _controller: CBClientBundle:Default:deleteUser }

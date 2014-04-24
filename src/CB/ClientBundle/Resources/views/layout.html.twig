@@ -13,6 +13,7 @@
 {% block stylesheets %}
     <!-- BOOSTRAP -->
     <link rel="stylesheet" href="{{ asset('js/bootstrap3/css/bootstrap.min.css') }}" type="text/css" />
+
     <link rel="stylesheet" href="{{ asset('js/bootstrap3/css/bootstrap-theme.min.css') }}" type="text/css" />
 {% endblock %}
 
@@ -26,35 +27,88 @@
     <script type="text/javascript" src="{{ asset('js/jquery/jquery-2.1.0.js') }}"></script>
     
     <script type="text/javascript" src="{{ asset('js/login.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/OAuth-debugger.js') }}"></script>
 {% endblock %}
 
 {% block perso_css %}
-    <link rel="stylesheet" href="{{ asset('css/sign-in.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}" type="text/css" />
+    {#<link rel="stylesheet" href="{{ asset('css/sign-in.css') }}" type="text/css" />#}
+    {% block more_stylesheets %}
+    {% endblock %}
 {% endblock %}
 
 {% block body %}
+    {% block menu %}
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">CubbyHole <span class="glyphicon glyphicon-registration-mark"></a>
+            </div>
 
-{% endblock %}
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+              <ul class="nav navbar-nav">
 
-            
+                <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 
+                <li><a href="#">My offers</a></li>
 
-{% block menu %}
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <a class="brand" href="#">Spirit-Dev.net</a>
-            
-            {#{{ knp_menu_render('HomeMainBundle:MenuBuilder:mainMenu', {'currentClass': 'active', 'template': 'HomeMainBundle:Menu:knp_menu.html.twig'}) }}
-            
-            {% if is_granted("ROLE_SUPER_ADMIN") %}
-                {{ knp_menu_render('HomeMainBundle:MenuBuilder:adminMenu', {'currentClass': 'active', 'template': 'HomeMainBundle:Menu:knp_menu.html.twig'}) }}
-            {% endif %}
-            
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ knp_menu_render('HomeMainBundle:MenuBuilder:userMenu', {'currentClass': 'active', 'template': 'HomeMainBundle:Menu:knp_menu.html.twig'}) }}
-            {% endif %}#}
-            
-        </div>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-wrench"> CubbyHole tools <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#"><span class="glyphicon glyphicon-new-window"> Create new folder</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-trash"> Delete  folder</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-share"></span> Share folder</a></li>
+                  </ul>
+                </li>
+
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+
+                <p class="navbar-text">Hi {{user['user_username']}} !</p>
+
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-toggle="dropdown">OAurh debuger <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#" id="check_local_token" data-placement="left" title="DEFINE TOOLTIP"><span class="glyphicon glyphicon-check"></span> Token - local</a></li>
+                    <li><a href="#" id="check_remote_token" data-placement="left" title="DEFINE TOOLTIP"><span class="glyphicon glyphicon-check"></span> Token - remote</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" id="check_local_user" data-placement="left" title="DEFINE TOOLTIP"><span class="glyphicon glyphicon-check"></span> User info - local</a></li>
+                    <li><a href="#" id="check_remote_user" data-placement="left" title="DEFINE TOOLTIP"><span class="glyphicon glyphicon-check"></span> User info - remote</a></li>
+                    <li><a href="#" id="delete_remote_user" data-placement="left" title="DEFINE TOOLTIP"><span class="glyphicon glyphicon-trash"></span> User info - remote</a> </li>
+                    <li><a href="#" data-placement="left" title="DEFINE TOOLTIP"></a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" data-placement="left" title="DEFINE TOOLTIP">Show console</a></li>
+                  </ul>
+                </li>
+
+              </ul>
+
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+    {% endblock %}
+
+    <div class="container-fluid">
+      <div class="row">
+
+        {% block body_content %}
+        {% endblock %}
+
+      </div>
     </div>
+
 {% endblock %}

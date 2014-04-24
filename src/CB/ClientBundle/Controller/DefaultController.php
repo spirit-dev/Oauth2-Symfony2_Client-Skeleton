@@ -13,13 +13,28 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        // return $this->render('CBClientBundle:Default:sign-in.html.twig', array('name' => $name));
-		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_ANONYMOUSLY')) {
-        	return $this->render('CBClientBundle:Default:index.html.twig');
-		}
-		else {
-			return $this->redirect($this->generateUrl('cb_client_login'));
-		}
+        
+        $ue = $this->container->get('cb_client.auth_user_entity');
+        $oar = $this->container->get('cb_client.oauthrequestor');
+        // $ug = $this->container->get('cb_client.oauth_user_grants');
+        // $ug->hasExpired();
+        $userEnity = $ue->getUserEntity();
+
+        if ($userEnity['user_id'] === 'session_error' || 
+            $userEnity['user_username'] === 'session_error' || 
+            $userEnity['user_email'] === 'session_error' || 
+            $userEnity['user_role'] === 'session_error') {
+
+            return $this->redirect($this->generateUrl('cb_client_login'));
+
+        }
+
+        return $this->render('CBClientBundle:Default:index.html.twig', 
+            array(
+                'user' => $ue->getUserEntity(),
+                'access_token' => $oar->getAccessToken()
+            )
+        );
     }
 
     public function loginAction() {
@@ -42,25 +57,51 @@ class DefaultController extends Controller
                 "response_type" => "redirection",
                 "response_text" => "User authentification accorded. Need to redirect",
                 "response_data" => array(
-                        "redirect_value" => $oar->getRedirectUri(),
-                        "access_token" => $oar->getAccessToken()
+                        "redirect_value" => $oar->getRedirectUri()
+                        // "access_token" => $oar->getAccessToken()
                     )
             ), 200);   
         }
-        if ($req == 206)
+        if ($req == 206) {
             return new JsonResponse(array(
                 "response_header" => "authentification nok",
                 "response_type" => "explanation",
                 "response_text" => "User authentification failed."
             ), 206);
+        }
+        return new JsonResponse($req, 200);
     }
 
-    public function enttestAction() {
+    public function checkTokenAction() {
 
         $oar = $this->container->get('cb_client.oauthrequestor');
 
         $req = $oar->checkStatus();
 
         return new JsonResponse($req, 200);  
+    }
+
+    public function checkUserAction() {
+        $ue = $this->container->get('cb_client.auth_user_entity');
+        // $req = $ue->setUserEntity("1", "Roger", "roger@paul.fr", "USER");
+        $req = $ue->getUserEntity();
+        // $req = $ue->deleteSessionVars();
+        
+        // $oar = $this->container->get('cb_client.oauthrequestor');
+        // $req = $oar->getTokenDateOut();
+        // $req = $oar->getRemoteUser("test");
+
+        return new JsonResponse($req, 200); 
+    }
+
+    public function deleteUserAction() {
+
+        $ue = $this->container->get('cb_client.auth_user_entity');
+        $req = $ue->deleteSessionVars();
+        return new JsonResponse($req, 200); 
+    }
+
+    public function logoutAction() {
+
     }
 }
