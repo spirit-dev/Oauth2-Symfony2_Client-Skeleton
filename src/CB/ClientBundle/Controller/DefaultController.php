@@ -11,8 +11,7 @@ use Buzz\Browser;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
-    {
+    public function indexAction() {
         
         $ue = $this->container->get('cb_client.auth_user_entity');
         $oar = $this->container->get('cb_client.oauthrequestor');
@@ -32,12 +31,19 @@ class DefaultController extends Controller
         return $this->render('CBClientBundle:Default:index.html.twig', 
             array(
                 'user' => $ue->getUserEntity(),
-                'access_token' => $oar->getAccessToken()
+                'access_token' => $oar->getAccessToken(),
+                'env' => $this->container->get('kernel')->getEnvironment()
             )
         );
     }
 
+    public function logoutAction() {
+
+        return 0;
+    }
+
     public function loginAction() {
+
     	return $this->render('CBClientBundle:Default:sign-in.html.twig');
     }
 
@@ -47,6 +53,7 @@ class DefaultController extends Controller
         $password = $request->get('password');
 
         $oar = $this->container->get('cb_client.oauthrequestor');
+        $ue = $this->container->get('cb_client.auth_user_entity');
 
         $req = $oar->getUserGrants($username, $password);
 
@@ -57,8 +64,9 @@ class DefaultController extends Controller
                 "response_type" => "redirection",
                 "response_text" => "User authentification accorded. Need to redirect",
                 "response_data" => array(
-                        "redirect_value" => $oar->getRedirectUri()
-                        // "access_token" => $oar->getAccessToken()
+                        "redirect_value" => $oar->getRedirectUri(),
+                        "access_token" => $oar->getAccessToken(),
+                        "user" => $ue->getUserEntity()
                     )
             ), 200);   
         }
@@ -85,7 +93,6 @@ class DefaultController extends Controller
         $ue = $this->container->get('cb_client.auth_user_entity');
         // $req = $ue->setUserEntity("1", "Roger", "roger@paul.fr", "USER");
         $req = $ue->getUserEntity();
-        // $req = $ue->deleteSessionVars();
         
         // $oar = $this->container->get('cb_client.oauthrequestor');
         // $req = $oar->getTokenDateOut();
@@ -99,9 +106,5 @@ class DefaultController extends Controller
         $ue = $this->container->get('cb_client.auth_user_entity');
         $req = $ue->deleteSessionVars();
         return new JsonResponse($req, 200); 
-    }
-
-    public function logoutAction() {
-
     }
 }

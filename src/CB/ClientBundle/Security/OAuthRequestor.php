@@ -2,6 +2,8 @@
 
 namespace CB\ClientBundle\Security;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class OAuthRequestor {
 
 	protected $token_uri = "http://cubbyholeapi.com/oauth/v2/token";
@@ -44,6 +46,10 @@ class OAuthRequestor {
 	}
 
 	public function getUserGrants($usr, $psw) {
+
+		$session = new Session();
+		$session->invalidate();
+		$session->start();
 
         $req = $this->formatUserGrantUri($usr, $psw);
 

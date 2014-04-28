@@ -22,10 +22,18 @@ class OAuthUserEntity {
     }
 
     public function deleteSessionVars() {
-        unset($_SESSION['user_id']);
-        unset($_SESSION['user_username']);
-        unset($_SESSION['user_email']);
-        unset($_SESSION['user_role']);
+        if(isset($_SESSION['user_id'])) {
+            unset($_SESSION['user_id']);
+        }
+        if(isset($_SESSION['user_username'])) {
+            unset($_SESSION['user_username']);
+        }
+        if(isset($_SESSION['user_email'])) {
+            unset($_SESSION['user_email']);
+        }
+        if(isset($_SESSION['user_role'])) {
+            unset($_SESSION['user_role']);
+        }
     }
 
     private function serializeSet($id, $username, $email, $role) {
@@ -34,6 +42,11 @@ class OAuthUserEntity {
     	$this->user_username = $username;
     	$this->user_email = $email;
     	$this->user_role = $role;
+
+        
+        // if(!session_start()) {
+        //     session_start();
+        // }
 
     	// set Session vars
     	$this->setId($this->user_id);

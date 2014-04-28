@@ -7,7 +7,7 @@ use \DateInterval;
 
 class OAuthUserGrants {
 
-    protected $access_token = "test";
+    protected $access_token;
     protected $refresh_token;
     protected $scope;
     protected $expires_in;
@@ -35,6 +35,9 @@ class OAuthUserGrants {
     	$this->getSessionVars();
 		
 		$date1 = new DateTime("now");
+        if ($this->date_outcome == "session_error") {
+            return true;
+        }
 		$date2 = new DateTime($this->date_outcome->format('Y-m-d H:i:s'));
 
 		if ($date1 < $date2) {
@@ -77,7 +80,9 @@ class OAuthUserGrants {
     }
 
     private function setSessionVars() {
-    	// session_start();
+    	// if(!session_start()) {
+     //        session_start();
+     //    }
     	$_SESSION['oaug_access_token'] = $this->access_token;
     	$_SESSION['oaug_refresh_token'] = $this->refresh_token;
     	$_SESSION['oaug_scope'] = $this->scope;
@@ -141,13 +146,33 @@ class OAuthUserGrants {
     }
 
     public function deleteSessionVars() {
-    	unset($_SESSION['oaug_access_token']);
-		unset($_SESSION['oaug_refresh_token']);
-		unset($_SESSION['oaug_scope']);
-		unset($_SESSION['oaug_expires_in']);
-		unset($_SESSION['oaug_token_type']);
-		unset($_SESSION['oaug_date_income']);
-		unset($_SESSION['oaug_date_outcome']);
+        if(isset($_SESSION['oaug_access_token'])) {
+            unset($_SESSION['oaug_access_token']);
+        }
+		
+        if(isset($_SESSION['oaug_refresh_token'])) {
+            unset($_SESSION['oaug_refresh_token']);
+        }
+		
+        if(isset($_SESSION['oaug_scope'])) {
+            unset($_SESSION['oaug_scope']);
+        }
+		
+        if(isset($_SESSION['oaug_expires_in'])) {
+            unset($_SESSION['oaug_expires_in']);
+        }
+		
+        if(isset($_SESSION['oaug_token_type'])) {
+            unset($_SESSION['oaug_token_type']);
+        }
+		
+        if(isset($_SESSION['oaug_date_income'])) {
+            unset($_SESSION['oaug_date_income']);
+        }
+		
+        if(isset($_SESSION['oaug_date_outcome'])) {
+            unset($_SESSION['oaug_date_outcome']);
+        }
     }
 
 }
